@@ -1,22 +1,25 @@
 const fs = require('fs');
+const tratadorErro = require('./erros/tratadorErros');
+const trataErro = require('./erros/tratadorErros');
 
 const listaInfoTerminal = process.argv;
 const link = listaInfoTerminal[2];
 
-console.log((link), '\n');
-
 fs.readFile(link, 'utf-8', (err, texto) => {
-    if (err) throw err;
-    separaEmParagrafos(texto);
+    try {
+        if (err) throw err;
+        contaPalavras(texto);
+    } catch (erro) {
+        trataErro(erro);
+    }
 });
 
-function separaEmParagrafos(texto) {
-    // const contagem = paragrafos
-    // .filter((paragrafo) => paragrafo)
-    // .map((paragrafo) => {
-    //     return verificaPalavrasDuplicadas(paragrafo);
-    // }); ISSO FOI DESCONTINUADO POIS HÁ DOIS LOOPS
-    const paragrafos = texto.toLowerCase().split('\n');
+function separaEmParagrafos (texto) {
+    return texto.toLowerCase().split('\n');
+}
+
+function contaPalavras(texto) {
+    const paragrafos = separaEmParagrafos(texto);
     const contagem = paragrafos.flatMap((paragrafo) => {
         if (!paragrafo) return [];
         return verificaPalavrasDuplicadas(paragrafo);

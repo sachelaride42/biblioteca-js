@@ -1,33 +1,17 @@
-const fs = require('fs');
-const tratadorErro = require('./erros/tratadorErros');
-const trataErro = require('./erros/tratadorErros');
-
-const listaInfoTerminal = process.argv;
-const link = listaInfoTerminal[2];
-
-fs.readFile(link, 'utf-8', (err, texto) => {
-    try {
-        if (err) throw err;
-        contaPalavras(texto);
-    } catch (erro) {
-        trataErro(erro);
-    }
-});
-
 function separaEmParagrafos (texto) {
     return texto.toLowerCase().split('\n');
 }
 
-function contaPalavras(texto) {
+export function contaPalavras(texto) {
     const paragrafos = separaEmParagrafos(texto);
     const contagem = paragrafos.flatMap((paragrafo) => {
         if (!paragrafo) return [];
         return verificaPalavrasDuplicadas(paragrafo);
     });
-    console.log(contagem);
+    return contagem;
 }
 
-function limpaPalavra (palavra) {
+export function limpaPalavra (palavra) {
     return palavra.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]/g, '');
 }
 
